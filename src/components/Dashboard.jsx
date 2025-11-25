@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { useEntries } from '../hooks/useEntries';
-import { isToday, isThisWeek, isThisMonth, parseISO } from 'date-fns';
-import { BarChart3, TrendingUp, Calendar } from 'lucide-react';
+import {
+    isToday, isThisWeek, isThisMonth, parseISO, format,
+    startOfWeek, endOfWeek, startOfMonth, endOfMonth,
+    addWeeks, addMonths, isWithinInterval
+} from 'date-fns';
+import { es } from 'date-fns/locale';
+import { Clock, CalendarDays, CalendarRange } from 'lucide-react';
+import ActivityIntervalsChart from './charts/ActivityIntervalsChart';
+import UrgencyScatterChart from './charts/UrgencyScatterChart';
+import HourlyDistributionChart from './charts/HourlyDistributionChart';
 
 export default function Dashboard() {
     const { entries } = useEntries();
+    const [viewMode, setViewMode] = useState('week'); // 'week', 'month', 'history'
 
     const todayCount = entries.filter(e => isToday(parseISO(e.timestamp))).length;
     const weekCount = entries.filter(e => isThisWeek(parseISO(e.timestamp), { weekStartsOn: 1 })).length;
@@ -12,12 +21,34 @@ export default function Dashboard() {
 
     return (
         <div className="dashboard">
-            <h2>Estadísticas</h2>
+            <h2 className="sticky-dashboard-header">Estadísticas</h2>
+
+            {/* Global Selector */}
+            <div className="view-switcher" style={{ marginBottom: '15px' }}>
+                <button
+                    className={viewMode === 'week' ? 'active' : ''}
+                    onClick={() => setViewMode('week')}
+                >
+                    Semana
+                </button>
+                <button
+                    className={viewMode === 'month' ? 'active' : ''}
+                    onClick={() => setViewMode('month')}
+                >
+                    Mes
+                </button>
+                <button
+                    className={viewMode === 'history' ? 'active' : ''}
+                    onClick={() => setViewMode('history')}
+                >
+                    Histórico
+                </button>
+            </div>
 
             <div className="stats-grid">
                 <div className="stat-box">
                     <div className="icon-bg">
-                        <Calendar size={24} />
+                        <Clock size={24} />
                     </div>
                     <div className="stat-info">
                         <span className="value">{todayCount}</span>
@@ -27,7 +58,7 @@ export default function Dashboard() {
 
                 <div className="stat-box">
                     <div className="icon-bg">
-                        <TrendingUp size={24} />
+                        <CalendarDays size={24} />
                     </div>
                     <div className="stat-info">
                         <span className="value">{weekCount}</span>
@@ -37,7 +68,7 @@ export default function Dashboard() {
 
                 <div className="stat-box">
                     <div className="icon-bg">
-                        <BarChart3 size={24} />
+                        <CalendarRange size={24} />
                     </div>
                     <div className="stat-info">
                         <span className="value">{monthCount}</span>
@@ -46,8 +77,15 @@ export default function Dashboard() {
                 </div>
             </div>
 
-            <div className="chart-placeholder">
-                <p>Gráficos detallados próximamente...</p>
+            <div className="charts-grid" style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                gap: '20px',
+                marginTop: '20px'
+            }}>
+                <ActivityIntervalsChart entries={entries} viewMode={viewMode} />
+                <UrgencyScatterChart entries={entries} viewMode={viewMode} />
+                <HourlyDistributionChart entries={entries} viewMode={viewMode} />
             </div>
         </div>
     );
