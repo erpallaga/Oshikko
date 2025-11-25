@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useEntries } from '../hooks/useEntries';
-import { Droplet, ShieldCheck, AlertTriangle, Siren, Check, Clock } from 'lucide-react';
+import { Droplet, ShieldCheck, AlertTriangle, Siren, Check } from 'lucide-react';
 
 export default function EntryForm() {
     const { addEntry } = useEntries();
@@ -33,7 +33,7 @@ export default function EntryForm() {
         <div className="entry-form minimalist">
             {/* Date Time Picker - Minimalist */}
             <div className="input-group minimalist-group">
-                <div className="icon-label"><Clock size={20} /></div>
+
                 <input
                     type="datetime-local"
                     className="datetime-input minimalist-input"

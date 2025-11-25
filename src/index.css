@@ -234,8 +234,8 @@ h2 {
 
 .minimalist-input {
     text-align: center;
-    border: none;
-    background: transparent;
+    border: 2px solid var(--color-water-light);
+    background: rgba(255, 255, 255, 0.8);
     font-size: 1.8rem;
     font-weight: 300;
     color: var(--color-water-deep);
