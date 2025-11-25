@@ -12,22 +12,19 @@ export default function Layout({ children, activeTab, setActiveTab }) {
                     className={`nav-item ${activeTab === 'log' ? 'active' : ''}`}
                     onClick={() => setActiveTab('log')}
                 >
-                    <Droplets size={24} />
-                    <span>Anotar</span>
+                    <Droplets size={32} />
                 </button>
                 <button
                     className={`nav-item ${activeTab === 'calendar' ? 'active' : ''}`}
                     onClick={() => setActiveTab('calendar')}
                 >
-                    <Calendar size={24} />
-                    <span>Calendario</span>
+                    <Calendar size={32} />
                 </button>
                 <button
                     className={`nav-item ${activeTab === 'dashboard' ? 'active' : ''}`}
                     onClick={() => setActiveTab('dashboard')}
                 >
-                    <BarChart3 size={24} />
-                    <span>Gráficos</span>
+                    <BarChart3 size={32} />
                 </button>
             </nav>
         </div>
