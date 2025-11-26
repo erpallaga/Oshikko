@@ -43,11 +43,51 @@ A minimalist, "watery" themed Progressive Web App (PWA) for tracking urination f
     ```
 4.  Open `http://localhost:5173` in your browser.
 
-## Installation (Android)
+## PWA Installation (Web)
 
 1.  Open the app in Chrome on Android.
 2.  Tap the menu (three dots) or wait for the prompt.
 3.  Select "Install App" or "Add to Home Screen".
+
+## Android Native Development (Capacitor)
+
+This project uses **Capacitor** to run as a native Android app.
+
+### Prerequisites
+- **Android Studio** installed.
+- Android device (USB debugging enabled) or Emulator.
+
+### Running on Android
+1.  **Open in Android Studio**:
+    ```bash
+    npx cap open android
+    ```
+    Or open the `android` folder manually in Android Studio.
+2.  **Run**:
+    - Wait for Gradle sync to finish.
+    - Select your device/emulator.
+    - Click the green **Run (Play)** button.
+
+### Updating the App
+When you make changes to the React code (`src/`), you must update the Android build:
+
+1.  **Rebuild Web Assets**:
+    ```bash
+    npm run build
+    ```
+2.  **Sync to Android**:
+    ```bash
+    npx cap sync
+    ```
+3.  **Rerun**: Click "Run" in Android Studio again.
+
+### Generating an APK (for sharing)
+To share the app or install it manually without a PC connection:
+1.  Open **Android Studio**.
+2.  Go to **Build** > **Build Bundle(s) / APK(s)** > **Build APK(s)**.
+3.  Wait for the build to finish.
+4.  Click **locate** in the notification (or find it in `android/app/build/outputs/apk/debug/app-debug.apk`).
+5.  Send this file to your phone and install it!
 
 ## License
 
