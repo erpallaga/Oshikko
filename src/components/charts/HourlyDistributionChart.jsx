@@ -99,7 +99,7 @@ export default function HourlyDistributionChart({ entries = [], viewMode = 'week
                             contentStyle={{ borderRadius: '12px', border: '1px solid rgba(255,255,255,0.5)', boxShadow: '0 4px 20px rgba(0,119,182,0.15)', background: 'rgba(255,255,255,0.95)' }}
                             labelFormatter={(label) => `${label}:00 - ${label}:59`}
                         />
-                        <Bar dataKey="count" name="Eventos" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
+                        <Bar dataKey="count" name="Oshikko" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
                     </BarChart>
                 </ResponsiveContainer>
             </div>

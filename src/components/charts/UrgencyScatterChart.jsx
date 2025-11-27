@@ -171,7 +171,7 @@ export default function UrgencyScatterChart({ entries = [], viewMode = 'week' })
                         />
                         <ZAxis type="number" dataKey="z" range={[20, 2500]} name="Volumen" />
                         <Tooltip content={<CustomTooltip />} cursor={{ strokeDasharray: '3 3' }} />
-                        <Scatter name="Eventos" data={data}>
+                        <Scatter name="Oshikko" data={data}>
                             {data.map((entry, index) => (
                                 <Cell key={`cell-${index}`} fill={getUrgencyColor(entry.urgency)} />
                             ))}
