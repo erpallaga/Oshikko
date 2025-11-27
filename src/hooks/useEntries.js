@@ -26,5 +26,9 @@ export function useEntries() {
         return entries;
     };
 
-    return { entries, addEntry };
+    const deleteEntry = (id) => {
+        setEntries(prev => prev.filter(entry => entry.id !== id));
+    };
+
+    return { entries, addEntry, deleteEntry };
 }

@@ -111,7 +111,7 @@ export default function ActivityIntervalsChart({ entries = [], viewMode = 'week'
                             tick={{ fontSize: 12, fill: '#03045e' }}
                             axisLine={false}
                             tickLine={false}
-                            label={{ value: 'Eventos', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#666', fontSize: 12 } }}
+                            label={{ value: 'Oshikko', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#666', fontSize: 12 } }}
                         />
                         <YAxis
                             yAxisId="right"
@@ -127,7 +127,7 @@ export default function ActivityIntervalsChart({ entries = [], viewMode = 'week'
                         />
                         <Legend wrapperStyle={{ paddingTop: '10px' }} />
 
-                        <Bar yAxisId="left" dataKey="count" name="Eventos" fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={20} />
+                        <Bar yAxisId="left" dataKey="count" name="Oshikko" fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={20} />
 
                         <Line
                             yAxisId="right"

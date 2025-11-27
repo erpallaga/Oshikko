@@ -6,7 +6,7 @@ import { es } from 'date-fns/locale';
 export default function EventsPerDayChart({ data }) {
     return (
         <div className="chart-card">
-            <h3 className="text-lg font-semibold mb-4 text-gray-700">Eventos por Día</h3>
+            <h3 className="text-lg font-semibold mb-4 text-gray-700">Oshikko por Día</h3>
             <div style={{ width: '100%', height: 300 }}>
                 <ResponsiveContainer>
                     <BarChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>

@@ -17,13 +17,16 @@ import {
     differenceInMinutes
 } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { Droplet, ShieldCheck, AlertTriangle, Siren, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
+import { Droplet, ShieldCheck, AlertTriangle, Siren, ChevronLeft, ChevronRight, ChevronDown, Trash2 } from 'lucide-react';
 
 export default function CalendarView() {
-    const { entries } = useEntries();
+    const { entries, deleteEntry } = useEntries();
     const [view, setView] = useState('day'); // day, week, month
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [expandedDays, setExpandedDays] = useState({});
+    const [selectedEventId, setSelectedEventId] = useState(null);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [entryToDelete, setEntryToDelete] = useState(null);
 
     // --- Helpers ---
     const renderDrops = (count) => (
@@ -85,22 +88,66 @@ export default function CalendarView() {
 
     // --- Renderers ---
 
-    const renderTimelineEvent = (entry) => (
-        <div key={entry.id} className="timeline-event">
-            <div className="timeline-connector"></div>
-            <div className="entry-time">
-                {format(parseISO(entry.timestamp), 'HH:mm')}
-            </div>
-            <div className="entry-details">
-                <div className="detail-item">
-                    {renderDrops(entry.amount)}
+    const handleDeleteClick = (e, entry) => {
+        e.stopPropagation();
+        setEntryToDelete(entry);
+        setShowDeleteConfirm(true);
+    };
+
+    const confirmDelete = () => {
+        if (entryToDelete) {
+            deleteEntry(entryToDelete.id);
+            setShowDeleteConfirm(false);
+            setEntryToDelete(null);
+            setSelectedEventId(null);
+        }
+    };
+
+    const renderTimelineEvent = (entry) => {
+        const isSelected = selectedEventId === entry.id;
+        return (
+            <div
+                key={entry.id}
+                className={`timeline-event ${isSelected ? 'selected' : ''}`}
+                onClick={() => setSelectedEventId(isSelected ? null : entry.id)}
+                style={{ cursor: 'pointer', border: isSelected ? '2px solid var(--color-water-mid)' : '1px solid rgba(255, 255, 255, 0.5)' }}
+            >
+                <div className="timeline-connector"></div>
+                <div className="entry-time">
+                    {format(parseISO(entry.timestamp), 'HH:mm')}
                 </div>
-                <div className="detail-item">
-                    {renderUrgencyIcon(entry.urgency)}
+                <div className="entry-details">
+                    <div className="detail-item">
+                        {renderDrops(entry.amount)}
+                    </div>
+                    <div className="detail-item">
+                        {renderUrgencyIcon(entry.urgency)}
+                    </div>
                 </div>
+                {isSelected && (
+                    <button
+                        onClick={(e) => handleDeleteClick(e, entry)}
+                        style={{
+                            background: '#ef476f',
+                            border: 'none',
+                            borderRadius: '50%',
+                            width: '32px',
+                            height: '32px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: 'white',
+                            marginLeft: '10px',
+                            cursor: 'pointer',
+                            boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+                        }}
+                    >
+                        <Trash2 size={16} />
+                    </button>
+                )}
             </div>
-        </div>
-    );
+        );
+    };
 
     const renderWeekView = () => {
         const start = startOfWeek(selectedDate, { weekStartsOn: 1 });
@@ -131,7 +178,7 @@ export default function CalendarView() {
 
                                 <div className="summary-stats">
                                     <div className="stat-pill">
-                                        <strong>{stats.count}</strong> micciones
+                                        <strong>{stats.count}</strong> oshikko
                                     </div>
                                     {stats.count > 1 && (
                                         <>
@@ -180,7 +227,7 @@ export default function CalendarView() {
                 <div className="day-summary-card" style={{ cursor: 'default', marginBottom: '20px' }}>
                     <div className="summary-stats" style={{ justifyContent: 'center' }}>
                         <div className="stat-pill">
-                            <strong>{stats.count}</strong> micciones
+                            <strong>{stats.count}</strong> oshikko
                         </div>
                         {stats.count > 1 && (
                             <>
@@ -293,6 +340,65 @@ export default function CalendarView() {
             {view === 'month' && renderMonthGrid()}
             {view === 'week' && renderWeekView()}
             {view === 'day' && renderDayView()}
+
+            {showDeleteConfirm && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 1000,
+                    backdropFilter: 'blur(5px)'
+                }}>
+                    <div style={{
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        padding: '25px',
+                        borderRadius: '20px',
+                        maxWidth: '300px',
+                        width: '90%',
+                        textAlign: 'center',
+                        boxShadow: '0 10px 25px rgba(0,0,0,0.2)'
+                    }}>
+                        <h3 style={{ marginTop: 0, color: 'var(--color-text)' }}>Eliminar oshikko</h3>
+                        <p style={{ color: 'var(--color-text)', opacity: 0.8, marginBottom: '25px' }}>¿Estás seguro de que quieres eliminar este oshikko?</p>
+                        <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+                            <button
+                                onClick={() => setShowDeleteConfirm(false)}
+                                style={{
+                                    padding: '10px 20px',
+                                    borderRadius: '12px',
+                                    border: 'none',
+                                    background: 'var(--color-foam)',
+                                    color: 'var(--color-text)',
+                                    fontWeight: '600',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                onClick={confirmDelete}
+                                style={{
+                                    padding: '10px 20px',
+                                    borderRadius: '12px',
+                                    border: 'none',
+                                    background: '#ef476f',
+                                    color: 'white',
+                                    fontWeight: '600',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
