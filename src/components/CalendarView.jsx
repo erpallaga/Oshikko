@@ -289,9 +289,31 @@ export default function CalendarView() {
                                 <span className="day-number">{format(day, 'd')}</span>
                                 {dayEntries.length > 0 && (
                                     <div className="density-dots">
-                                        {Array.from({ length: Math.min(dayEntries.length, 3) }).map((_, i) => (
-                                            <div key={i} className="dot"></div>
-                                        ))}
+                                        {dayEntries.map((entry, i) => {
+                                            // Color based on urgency
+                                            let color = '#06d6a0'; // Level 1
+                                            if (entry.urgency === 2) color = '#ffd166';
+                                            if (entry.urgency === 3) color = '#ef476f';
+
+                                            // Size based on amount
+                                            let size = 4; // Amount 1
+                                            if (entry.amount === 2) size = 6;
+                                            if (entry.amount >= 3) size = 8;
+
+                                            return (
+                                                <div
+                                                    key={i}
+                                                    className="dot"
+                                                    style={{
+                                                        backgroundColor: color,
+                                                        width: `${size}px`,
+                                                        height: `${size}px`,
+                                                        minWidth: `${size}px`, // Prevent shrinking
+                                                        minHeight: `${size}px`
+                                                    }}
+                                                ></div>
+                                            );
+                                        })}
                                     </div>
                                 )}
                             </div>
