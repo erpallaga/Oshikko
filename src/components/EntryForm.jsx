@@ -6,7 +6,7 @@ export default function EntryForm() {
     const { addEntry } = useEntries();
     const [amount, setAmount] = useState(2);
     const [urgency, setUrgency] = useState(1);
-    const [datetime, setDatetime] = useState(new Date().toISOString().slice(0, 16));
+    const [datetime, setDatetime] = useState(new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16));
     const [saved, setSaved] = useState(false);
 
     const handleSave = () => {
